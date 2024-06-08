@@ -4,11 +4,28 @@ USE todolist;
 
 
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
     name  VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT NULL,
     deleted_at TIMESTAMP DEFAULT NULL
+);
+
+
+CREATE TABLE task_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    task_area  VARCHAR(50) NOT NULL,
+    task_desc VARCHAR(50) NOT NULL UNIQUE,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT NULL,
+    deleted_at TIMESTAMP DEFAULT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+
 );

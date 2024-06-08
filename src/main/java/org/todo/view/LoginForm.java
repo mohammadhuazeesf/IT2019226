@@ -140,8 +140,9 @@ public class LoginForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "All  field required...!");
         }else{
             Users users = new Users(username, password);
-            if(users.userLogin()){
-                new Home().setVisible(true);
+            int userId = users.userLogin();
+            if(userId != 0){
+                new Home(userId).setVisible(true);
                 this.setVisible(false);
             }else{
                JOptionPane.showMessageDialog(this, "Username or password incorrect please try agin ..!"); 

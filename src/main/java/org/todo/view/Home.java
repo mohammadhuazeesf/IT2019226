@@ -13,8 +13,11 @@ public class Home extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public Home() {
+    private int userId;
+    
+    public Home(int userId) {
         initComponents();
+        this.userId = userId;
         this.setLocationRelativeTo(null);
     }
 
@@ -119,13 +122,13 @@ public class Home extends javax.swing.JFrame {
 
     private void listTodBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTodBtnActionPerformed
         // TODO add your handling code here:
-        new CreateToDoForm().setVisible(true);
+        new CreateToDoForm(this.userId).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_listTodBtnActionPerformed
 
     private void createToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createToDoActionPerformed
         // TODO add your handling code here:
-        new CreateToDoForm().setVisible(true);
+        new CreateToDoForm(this.userId).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_createToDoActionPerformed
 
@@ -165,7 +168,7 @@ public class Home extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                new Home(0).setVisible(true);
             }
         });
     }

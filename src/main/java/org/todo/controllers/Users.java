@@ -33,9 +33,8 @@ public class Users {
     }
     
     
-    public boolean userLogin(){   
-        String storedPassword = this.usersRepo.loginUser(this.userName);
-        return storedPassword.isEmpty() && password.equals(storedPassword);
+    public int userLogin(){    
+        return this.usersRepo.loginUser(this.userName, this.password);
     }
     
     

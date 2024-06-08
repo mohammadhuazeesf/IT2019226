@@ -169,7 +169,7 @@ public class RegisterForm extends javax.swing.JFrame {
             Users users = new Users(name, username, password);
             if(users.userRegister()){
                 JOptionPane.showMessageDialog(this, "User aaccount created successfully..!");
-                new Home().setVisible(true);
+                new LoginForm().setVisible(true);
                 this.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(this, "Something wrong please try agin later..!");

@@ -19,20 +19,23 @@ public class UsersRepo extends MainModel{
     }
     
     
-   public String loginUser(String username) {
-        String passw = "";
-        String sql = "SELECT password FROM users WHERE username = ?";
+   public int loginUser(String username, String password) {
+         int userId = 0;
+        String sql = "SELECT user_id, password FROM users WHERE username = ?";
         try (PreparedStatement pstmt = this.conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-               passw = rs.getString("password");
+               String passw = rs.getString("password");
+               if(password.equals(passw)){
+                   userId = rs.getInt("user_id");
+               }
             }
         } catch (SQLException e) {
             System.out.println("Login error: " + e.getMessage());
         }
-        return passw;
+        return userId;
     }
    
    

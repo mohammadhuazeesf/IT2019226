@@ -4,6 +4,9 @@
  */
 package org.todo.view;
 
+import javax.swing.JOptionPane;
+import org.todo.controllers.ToDo;
+
 /**
  *
  * @author Isuru B Gunathunga
@@ -13,8 +16,12 @@ public class CreateToDoForm extends javax.swing.JFrame {
     /**
      * Creates new form CreateToDoForm
      */
-    public CreateToDoForm() {
+    
+    private int userId;
+    
+    public CreateToDoForm(int userId) {
         initComponents();
+        this.userId = userId;
         this.setLocationRelativeTo(null);
     }
 
@@ -151,8 +158,8 @@ public class CreateToDoForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel3))
@@ -160,13 +167,15 @@ public class CreateToDoForm extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(taskStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(areaTextField))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel4))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(areaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(27, 27, 27)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -227,6 +236,24 @@ public class CreateToDoForm extends javax.swing.JFrame {
 
     private void createToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createToDoActionPerformed
         // TODO add your handling code here:
+        String area = areaTextField.getText();
+        String desk = toDoTask.getText();
+        String status = (String) taskStatus.getSelectedItem();
+        
+        if(area.isEmpty() || desk.isEmpty() || status.isEmpty()){
+            JOptionPane.showMessageDialog(this, "All field reqyired..!");
+        }else{
+            ToDo toDo = new ToDo();
+            if(toDo.createTask(this.userId, area, desk, status)){
+                JOptionPane.showMessageDialog(this, "Created..!");
+                 areaTextField.setText("");
+                 toDoTask.setText("");
+                 
+            }else{
+                JOptionPane.showMessageDialog(this, "Something went wrong please try agin later..!");
+            }
+            
+        }
     }//GEN-LAST:event_createToDoActionPerformed
 
     private void deleteBbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBbuttonActionPerformed
@@ -239,7 +266,7 @@ public class CreateToDoForm extends javax.swing.JFrame {
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         // TODO add your handling code here:
-        new Home().setVisible(true);
+        new Home(this.userId).setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_backBtnActionPerformed
 
@@ -273,7 +300,7 @@ public class CreateToDoForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CreateToDoForm().setVisible(true);
+                new CreateToDoForm(0).setVisible(true);
             }
         });
     }
