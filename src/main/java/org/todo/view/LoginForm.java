@@ -4,6 +4,9 @@
  */
 package org.todo.view;
 
+import javax.swing.JOptionPane;
+import org.todo.controllers.Users;
+
 /**
  *
  * @author Isuru B Gunathunga
@@ -129,6 +132,23 @@ public class LoginForm extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
+        
+        String username = userNameTextField.getText();
+        String password = passwordTextField.getText();
+        
+        if(username.isEmpty() || password.isEmpty()){
+            JOptionPane.showMessageDialog(this, "All  field required...!");
+        }else{
+            Users users = new Users(username, password);
+            if(users.userLogin()){
+                new Home().setVisible(true);
+                this.setVisible(false);
+            }else{
+               JOptionPane.showMessageDialog(this, "Username or password incorrect please try agin ..!"); 
+            }
+        }
+        
+        
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed

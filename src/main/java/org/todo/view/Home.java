@@ -29,9 +29,9 @@ public class Home extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        listUsersBtn = new javax.swing.JButton();
         createToDo = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        listTodBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -51,8 +51,13 @@ public class Home extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/welcome-right.png"))); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
-        jButton1.setText("List members");
+        listUsersBtn.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
+        listUsersBtn.setText("List Users");
+        listUsersBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listUsersBtnActionPerformed(evt);
+            }
+        });
 
         createToDo.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
         createToDo.setText("Create To Do");
@@ -62,11 +67,11 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
-        jButton3.setText("Lsit My To Do's");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        listTodBtn.setFont(new java.awt.Font("Segoe UI Light", 1, 14)); // NOI18N
+        listTodBtn.setText("Lsit My To Do's");
+        listTodBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                listTodBtnActionPerformed(evt);
             }
         });
 
@@ -82,8 +87,8 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(135, 135, 135)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(listUsersBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(listTodBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(createToDo, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(104, 104, 104)
@@ -103,22 +108,32 @@ public class Home extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(createToDo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(listTodBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(listUsersBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(130, 130, 130))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void listTodBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listTodBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        new CreateToDoForm().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_listTodBtnActionPerformed
 
     private void createToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createToDoActionPerformed
         // TODO add your handling code here:
+        new CreateToDoForm().setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_createToDoActionPerformed
+
+    private void listUsersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listUsersBtnActionPerformed
+        // TODO add your handling code here:
+        new UserListTable().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_listUsersBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,10 +172,10 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createToDo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton listTodBtn;
+    private javax.swing.JButton listUsersBtn;
     // End of variables declaration//GEN-END:variables
 }
