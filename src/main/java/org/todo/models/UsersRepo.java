@@ -7,6 +7,8 @@ package org.todo.models;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import org.todo.models.Helpers.User;
 
 /**
  *
@@ -54,5 +56,33 @@ public class UsersRepo extends MainModel{
         return false;
     }
     
+     public ArrayList<User> getUserList(){
+        
+        ArrayList<User> userList = new ArrayList<>();
+        
+        String sql = "SELECT * FROM users;";
+        
+         try (PreparedStatement pstmt = this.conn.prepareStatement(sql)) {
+            
+            ResultSet rs = pstmt.executeQuery();
+            while  (rs.next()) { 
+                User user = new User(
+                      rs.getInt("user_id"), 
+                      rs.getString("name"), 
+                      rs.getString("username"), 
+                      rs.getString("created_at"), 
+                      rs.getString("updated_at"), 
+                      rs.getString("deleted_at"));
+              
+              userList.add(user);
+             }
+            
+            
+        } catch (SQLException e) {
+            System.out.println("fetch: " + e.getMessage());
+        }
+        
+        return  userList;
+    }
     
 }

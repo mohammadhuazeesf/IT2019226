@@ -4,8 +4,13 @@
  */
 package org.todo.view;
 
+import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import org.todo.controllers.ToDo;
+import org.todo.models.Helpers.Task;
 
 /**
  *
@@ -18,11 +23,14 @@ public class CreateToDoForm extends javax.swing.JFrame {
      */
     
     private int userId;
+    private ArrayList<Task> taskList;
+    private int updateTaskID;
     
     public CreateToDoForm(int userId) {
         initComponents();
         this.userId = userId;
         this.setLocationRelativeTo(null);
+        this.showToDoList();
     }
 
     /**
@@ -59,16 +67,34 @@ public class CreateToDoForm extends javax.swing.JFrame {
 
         toDoListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Task ID", "User ID", "Task area", "To do task", "Status", "Create date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(toDoListTable);
+        if (toDoListTable.getColumnModel().getColumnCount() > 0) {
+            toDoListTable.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Task Area : ");
@@ -110,7 +136,7 @@ public class CreateToDoForm extends javax.swing.JFrame {
         jLabel4.setText("Create task");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Search : ");
+        jLabel5.setText("Search / Use Task ID: ");
 
         deleteBbutton.setText("Delete");
         deleteBbutton.addActionListener(new java.awt.event.ActionListener() {
@@ -153,7 +179,7 @@ public class CreateToDoForm extends javax.swing.JFrame {
                         .addComponent(deleteBbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -225,13 +251,56 @@ public class CreateToDoForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+  
+    private void showToDoList(){
+        ToDo toDo = new ToDo();
+        this.taskList = toDo.getTaskList(this.userId);
+        if(!taskList.isEmpty()){
+           
+            JTableHeader header= toDoListTable.getTableHeader();
+            header.setFont(new Font(null,Font.BOLD,12));
+            DefaultTableModel model = (DefaultTableModel) toDoListTable.getModel();
+            model.setRowCount(0);
+            Object[] row = new Object[6];
 
+            for(int i = 0;i< taskList.size();i++){
+                row[0] = taskList.get(i).getId();
+                row[1] = taskList.get(i).getUser_id();
+                row[2] = taskList.get(i).getTask_area();
+                row[3] = taskList.get(i).getTask_desc();
+                row[4] = taskList.get(i).getStatus();
+                row[5] = taskList.get(i).getCreated_at();
+
+                model.addRow(row);           
+            }
+        }
+    }
+    
     private void areaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areaTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_areaTextFieldActionPerformed
 
     private void updateToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateToDoActionPerformed
         // TODO add your handling code here:
+        String area = areaTextField.getText();
+        String desk = toDoTask.getText();
+        String status = (String) taskStatus.getSelectedItem();
+        
+        if(area.isEmpty() || desk.isEmpty() || status.isEmpty()){
+            JOptionPane.showMessageDialog(this, "All field reqyired..!");
+        }else{
+            ToDo toDo = new ToDo();
+            if(toDo.updateToDo(this.updateTaskID, area, desk, status)){
+                JOptionPane.showMessageDialog(this, "Updated..!");
+                this.updateTaskID = 0;
+                areaTextField.setText("");
+                toDoTask.setText("");
+                this.showToDoList();
+            }else{
+                JOptionPane.showMessageDialog(this, "Something went wrong please try agin later..!");
+            }
+            
+        }
     }//GEN-LAST:event_updateToDoActionPerformed
 
     private void createToDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createToDoActionPerformed
@@ -248,7 +317,7 @@ public class CreateToDoForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Created..!");
                  areaTextField.setText("");
                  toDoTask.setText("");
-                 
+                 this.showToDoList();
             }else{
                 JOptionPane.showMessageDialog(this, "Something went wrong please try agin later..!");
             }
@@ -258,10 +327,40 @@ public class CreateToDoForm extends javax.swing.JFrame {
 
     private void deleteBbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBbuttonActionPerformed
         // TODO add your handling code here:
+            ToDo toDo = new ToDo();
+            if(this.updateTaskID !=0 && toDo.deleteToDo(this.updateTaskID)){
+                JOptionPane.showMessageDialog(this, "Deleted..!");
+                this.updateTaskID = 0;
+                areaTextField.setText("");
+                toDoTask.setText("");
+                this.showToDoList();
+            }else{
+                JOptionPane.showMessageDialog(this, "Something went wrong please try agin later..!");
+            }
     }//GEN-LAST:event_deleteBbuttonActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // TODO add your handling code here:
+        try {
+            int taskId = Integer.parseInt(searchTextField.getText());
+            if(taskList.isEmpty()){
+                JOptionPane.showMessageDialog(this, "No data found..!"); 
+            }else{
+                for(int i = 0;i< taskList.size();i++){
+                   if(taskList.get(i).getId() == taskId)  {
+                       this.updateTaskID = taskId;
+                       areaTextField.setText(taskList.get(i).getTask_area());
+                       toDoTask.setText(taskList.get(i).getTask_desc());
+                       taskStatus.setSelectedItem(taskList.get(i).getStatus());
+                       break;
+                   }        
+                }
+            }
+            
+        } catch (NumberFormatException e) {
+            // Handle the case where the input is not a valid integer
+            JOptionPane.showMessageDialog(this, "Not a number..!");
+        }
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed

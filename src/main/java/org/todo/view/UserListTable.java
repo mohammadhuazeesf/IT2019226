@@ -4,6 +4,13 @@
  */
 package org.todo.view;
 
+import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import org.todo.controllers.Users;
+import org.todo.models.Helpers.User;
+
 /**
  *
  * @author lenovo
@@ -16,6 +23,32 @@ public class UserListTable extends javax.swing.JFrame {
     public UserListTable() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.showUserTable();
+    }
+    
+    
+    private void showUserTable(){
+        Users users = new Users();
+        ArrayList<User> userList = users.getUserList();
+        if(!userList.isEmpty()){
+            System.out.println(userList.get(0).getName());
+            JTableHeader header= userTable.getTableHeader();
+            header.setFont(new Font(null,Font.BOLD,12));
+            DefaultTableModel model = (DefaultTableModel) userTable.getModel();
+            model.setRowCount(0);
+            Object[] row = new Object[6];
+
+            for(int i = 0;i< userList.size();i++){
+                row[0] = userList.get(i).getUser_id();
+                row[1] = userList.get(i).getName();
+                row[2] = userList.get(i).getUsername();
+                row[3] = userList.get(i).getCreated_at();
+                row[4] = userList.get(i).getUpdated_at();
+                row[5] = userList.get(i).getDeleted_at();
+
+                model.addRow(row);           
+            }
+        }
     }
 
     /**
@@ -28,24 +61,32 @@ public class UserListTable extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        userTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        userTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "User id", "Name", "Username", "Created at", "Updated at", "Deleted at"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(userTable);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jLabel1.setText("User List");
@@ -115,6 +156,6 @@ public class UserListTable extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable userTable;
     // End of variables declaration//GEN-END:variables
 }

@@ -12,8 +12,6 @@ package org.todo.models;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
 
 public class MainModel {
     
@@ -27,7 +25,6 @@ public class MainModel {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            System.out.println("Mysql connectioned");
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("Mysql connection error");
         }

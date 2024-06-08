@@ -1,5 +1,7 @@
 package org.todo.controllers;
 
+import java.util.ArrayList;
+import org.todo.models.Helpers.User;
 import org.todo.models.UsersRepo;
 
 /*
@@ -17,8 +19,11 @@ public class Users {
     private String userName = "";
     private String password = "";
     UsersRepo usersRepo = null;
-    
-    
+
+    public Users() {
+        this.usersRepo = new UsersRepo();
+    }
+       
     public Users(String userName, String Password) {
         this.userName = userName;
         this.password = Password;
@@ -40,6 +45,11 @@ public class Users {
     
     public  boolean userRegister(){   
         return this.usersRepo.insertUser(this.name, this.userName, this.password);
+    }
+    
+    
+    public  ArrayList<User> getUserList(){
+        return this.usersRepo.getUserList();
     }
     
 }
